@@ -27,6 +27,10 @@ class AllFreeNovelsDB:
     def count_all_books(self):
         self.cursor.execute(f"SELECT COUNT(ID) FROM {self.books_table}")
         return self.cursor.fetchone()['COUNT(ID)']
+    
+    def count_all_books_with_infos(self):
+        self.cursor.execute(f"SELECT COUNT(ID) FROM {self.books_table} WHERE INFO IS NOT NULL")
+        return self.cursor.fetchone()['COUNT(ID)'] 
 
     def get_all_books_with_no_info(self):
         self.cursor.execute(f"SELECT * FROM {self.books_table} WHERE INFO IS NULL")

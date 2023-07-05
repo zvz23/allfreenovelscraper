@@ -64,6 +64,9 @@ def scrape_book_infos():
             print("SEARCHING BOOK INFO ", book['URL'])
             response = s.get(book['URL'])
             if response.status_code == 200:
+                if 'No Book Found' in response.text:
+                    print("BOOK NOT FOUND ", book['URL'])
+                    continue
                 book_info = parse_book(response.text)
                 with AllFreeNovelsDB(DB_NAME) as conn:
                     conn.save_book_info(book['ID'], json.dumps(book_info))    
