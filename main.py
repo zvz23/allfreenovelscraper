@@ -90,9 +90,14 @@ def scrape_book_pages():
                         print("SCRAPING PAGE: ", page_url)
                         response = s.get(page_url)
                         if response.status_code == 200:
-                            page_texts = format_page_texts(parse_page(response.text))
-                            conn.save_book_page(book['ID'], page_url, page_texts)
-                            print("FINISHED  SCRAPING PAGE ", page_url)
+                            page_texts = parse_page(response.text)
+                            if len(page_texts) != 0:
+                                conn.save_book_page(book['ID'], page_url, json.dumps(page_texts))
+                                print("FINISHED  SCRAPING PAGE ", page_url)
+                            else:
+                                print("NO TEXTS ", page_url)
+                                with open('notexts.txt', 'a') as f:
+                                    f.write(f'{page_url}\n')
                         else:
                             print(f"ERROR STATUS CODE: {page_url}")
                             
